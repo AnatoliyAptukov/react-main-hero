@@ -6,10 +6,13 @@ import { useImageSize } from 'react-image-size';
 import { useResizeObserver} from "react-ext-hooks";
 // import { position, width } from 'dom-helpers';
 const maxHeight = 600;
-const aspectRatio = 1 / 2;
+const aspectRatio = 900 / 600;
 const offsetFrontRatio = 1/5;
-const offsetParallaxRatio = 1/10;
+const offsetParallaxRatio = 1/20;
 const effectParallaxOffset = 10;
+const startBackOpacity = 0.1; 
+const defaultOptions =
+  {maxHeight, aspectRatio, offsetFrontRatio, offsetParallaxRatio, effectParallaxOffset, startBackOpacity };
 
 function calculateDisplayDimensions(imageSize, frameWidth) {
   let result = { width: 0, height: 0 };
@@ -22,17 +25,18 @@ function calculateDisplayDimensions(imageSize, frameWidth) {
   result.width = estimatedWidth;
   return result;
 }
-
+// #region initial styles consts
 const initStyleFrame = { height: `min(${maxHeight}px,calc(100vw * ${aspectRatio}))` };
-const initStyleRB = { objectFit: 'cover', objectPosition: 'right bottom', height: '100%', position: 'absolute', bottom: 0, right: '25%', opacity: 0.2, transition: 'width 0.5s ease-in 0.01s, opacity 0.5s ease-in 0.01s' };
-const initStyleLB = { objectFit: 'cover', objectPosition: 'left bottom', height: '100%', position: 'absolute', bottom: 0, left: '25%', opacity: 0.2, transition: 'width 0.5s ease-in 0.01s, opacity 0.5s ease-in 0.01s' };
-const initStyleRP = { objectFit: 'cover', objectPosition: 'right bottom', height: '100%', position: 'absolute', bottom: 0, right: '25%',filter: 'hue-rotate(180deg) sepia(100%)', transition: 'width 0.5s ease-in 0.01s, filter 0.5s ease-in 0.01s' };
-const initStyleLP = { objectFit: 'cover', objectPosition: 'left bottom', height: '100%', position: 'absolute', bottom: 0, left: '25%',filter: 'hue-rotate(180deg) sepia(100%)', transition: 'width 0.5s ease-in 0.01s, filter 0.5s ease-in 0.01s' };
+const initStyleRB = { objectFit: 'cover', objectPosition: 'right bottom', height: '100%', position: 'absolute', bottom: 0, right: '25%', opacity: startBackOpacity, transition: 'width 0.5s ease-in 0.01s, opacity 0.5s ease-in 0.01s' };
+const initStyleLB = { objectFit: 'cover', objectPosition: 'left bottom', height: '100%', position: 'absolute', bottom: 0, left: '25%', opacity: startBackOpacity, transition: 'width 0.5s ease-in 0.01s, opacity 0.5s ease-in 0.01s' };
+const initStyleRP = { objectFit: 'cover', objectPosition: 'right bottom', height: '100%', position: 'absolute', bottom: 0, right: '25%',filter: 'hue-rotate(180deg) sepia(100%)', transition: 'width 0.5s ease-in 0.01s, right 0.5s ease-in-out 0.01s, filter 0.5s ease-in 0.01s' };
+const initStyleLP = { objectFit: 'cover', objectPosition: 'left bottom', height: '100%', position: 'absolute', bottom: 0, left: '25%',filter: 'hue-rotate(180deg) sepia(100%)', transition: 'width 0.5s ease-in 0.01s, left 0.5s ease-in-out 0.01s, filter 0.5s ease-in 0.01s' };
 const initStyleRF = { objectFit: 'cover', objectPosition: 'right bottom', height: '100%', position: 'absolute', bottom: 0, right: '25%', transition: 'width 0.5s ease-in 0s, right 0.5s ease-in-out 0.01s' };
 const initStyleLF = { objectFit: 'cover', objectPosition: 'left bottom', height: '100%', position: 'absolute', bottom: 0, left: '25%', transition: 'width 0.5s ease-in 0s, left 0.5s ease-in-out 0.01s' };
+ // #endregion
 
-
-function MainHero({ className, images, centerOffsetPercent = 0 }) {
+function MainHero({ className, images, centerOffsetPercent = 0, options = defaultOptions }) {
+  const {maxHeight,aspectRatio,offsetFrontRatio, offsetParallaxRatio,effectParallaxOffset,startBackOpacity }=options
   const relocateImages = (pointerX) => {
     const frameWidth = frameRef?.current?.clientWidth;
     if (!frameWidth) return;
@@ -42,16 +46,15 @@ function MainHero({ className, images, centerOffsetPercent = 0 }) {
     const displayedDimensionsRP = calculateDisplayDimensions(sizeRP, frameWidth);
     const displayedDimensionsLF = calculateDisplayDimensions(sizeLF, frameWidth);
     const displayedDimensionsRF = calculateDisplayDimensions(sizeRF, frameWidth);
-    const adjustedCenter = frameWidth / 2 - (frameWidth / 100 * centerOffsetPercent);
+    const adjustedCenter = frameWidth / 2 - (displayedDimensionsLF.width / 100 * centerOffsetPercent);
     const x = pointerX ?? adjustedCenter;
     const blinkLFWidth = Math.min(Math.max(0, ((displayedDimensionsLF.width / 2) - (x - (frameWidth / 2)))), displayedDimensionsLF.width);
-    // const offsetFrontX = (adjustedCenter  - x) * offsetFrontRatio;
     const offsetFrontX = ((displayedDimensionsLF.width / 2) - blinkLFWidth) * offsetFrontRatio;
     const offsetParallaxX = ((displayedDimensionsLF.width / 2) - blinkLFWidth) * offsetParallaxRatio;
     setStyleLF(prev => {
       return {
         ...prev,
-        left: ((frameWidth / 2) - (displayedDimensionsLF.width / 2)) - offsetFrontX + 'px',
+        left: Math.ceil(((frameWidth / 2) - (displayedDimensionsLF.width / 2)) - offsetFrontX) + 'px',
         width: blinkLFWidth + 'px',
       }
     });
@@ -77,7 +80,7 @@ function MainHero({ className, images, centerOffsetPercent = 0 }) {
       setStyleRP(prev => {
         return {
           ...prev,
-          // right: ((frameWidth / 2) - (displayedDimensionsRP.width / 2)) + 'px',
+          right: ((frameWidth / 2) - (displayedDimensionsRP.width / 2)) + offsetParallaxX  + 'px',
           filter: (offsetFrontX -effectParallaxOffset) >0 ? '' : initStyleRP.filter,
           // width: (displayedDimensionsRP.width - blinkLFWidth + (displayedDimensionsLP.width - displayedDimensionsLF.width)) + 'px',
         }
@@ -98,7 +101,7 @@ function MainHero({ className, images, centerOffsetPercent = 0 }) {
       setStyleRB(prev => {
         return {
           ...prev,
-          // right: ((frameWidth / 2) - (displayedDimensionsRP.width / 2)) + 'px',
+          right: ((frameWidth / 2) - (displayedDimensionsRP.width / 2)) + 'px',
           opacity: (offsetFrontX -effectParallaxOffset) >0 ? 1 : initStyleRB.opacity,
           // width: (displayedDimensionsRP.width - blinkLFWidth + (displayedDimensionsLP.width - displayedDimensionsLF.width)) + 'px',
         }
@@ -124,7 +127,6 @@ function MainHero({ className, images, centerOffsetPercent = 0 }) {
   const [sizeRP, { loadingRP, errorRP }] = useImageSize(images.srcParallaxRight);
   const [sizeLF, { loadingLF, errorLF }] = useImageSize(images.srcForegroundLeft);
   const [sizeRF, { loadingRF, errorRF }] = useImageSize(images.srcForegroundRight);
-
   // #endregion
 
   // Observe for mount/unmount of MainHero component

@@ -20,13 +20,13 @@
     "gzipped": 1588
   },
   "lib/dist/react-main-hero.js": {
-    "bundled": 40065,
-    "minified": 16053,
-    "gzipped": 5444
+    "bundled": 40872,
+    "minified": 16456,
+    "gzipped": 5576
   },
   "lib/dist/react-main-hero.min.js": {
-    "bundled": 40065,
-    "minified": 16053,
-    "gzipped": 5444
+    "bundled": 40872,
+    "minified": 16456,
+    "gzipped": 5576
   }
 }
