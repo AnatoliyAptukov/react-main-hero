@@ -1,21 +1,18 @@
 {
   "name": "react-main-hero",
-  "version": "1.0.0",
+  "version": "0.15.0",
   "description": "A react component for hero block",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "scripts": {
     "test": "npm run lint && npm run testonly",
-    "testonly": "jest --verbose",
-    "tdd": "jest --watch",
-    "build": "rimraf lib && yarn build:cjs && yarn build:esm && yarn build:pick && yarn build:dist && yarn build:css && cp README.md LICENSE ./lib",
-    "build:css": "mkdirp ./lib/css && cp ./src/main-hero.css ./lib/css/main-hero.css",
-    "build:docs": "yarn --cwd www run build",
+    "build": "rimraf lib && yarn build:cjs && yarn build:esm && yarn build:pick && yarn build:dist && yarn build:declarations-cjs && yarn build:declarations-esm && cp README.md LICENSE ./lib",
     "build:cjs": "babel src --out-dir lib/cjs",
     "build:esm": "cross-env BABEL_ENV=esm babel src --out-dir lib/esm",
     "build:pick": "cherry-pick --cwd=lib --input-dir=../src --cjs-dir=cjs --esm-dir=esm",
     "build:dist": "cross-env BABEL_ENV=esm rollup -c",
-    "bootstrap": "yarn && yarn --cwd www",
+    "build:declarations-cjs": "cp ./src/index.d.ts ./lib/cjs/index.d.ts",
+    "build:declarations-esm": "cp ./src/index.d.ts ./lib/esm/index.d.ts",
     "fix": "run-s fix:eslint fix:prettier",
     "fix:eslint": "yarn lint:eslint --fix",
     "fix:prettier": "yarn lint:prettier --write",
@@ -24,10 +21,6 @@
     "lint:prettier": "prettier . --check",
     "release": "release",
     "release:next": "release --preid beta --tag next",
-    "deploy-docs": "yarn --cwd www run deploy",
-    "start": "yarn --cwd www run develop",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
     "semantic-release": "semantic-release"
   },
   "repository": {
@@ -66,10 +59,6 @@
     "react-dom": "^18.3.1"
   },
   "dependencies": {
-    "@babel/runtime": "^7.5.5",
-    "dom-helpers": "^5.0.1",
-    "loose-envify": "^1.4.0",
-    "prop-types": "^15.6.2",
     "react-ext-hooks": "^1.25.0",
     "react-image-size": "^2.4.0"
   },
@@ -83,7 +72,8 @@
     "@semantic-release/npm": "^7.0.5",
     "@storybook/addon-actions": "^6.3.4",
     "@storybook/react": "^6.3.4",
-    "@testing-library/react": "alpha",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.1.0",
     "@typescript-eslint/eslint-plugin": "^4.26.1",
     "astroturf": "^0.10.0",
     "babel-eslint": "^10.1.0",
