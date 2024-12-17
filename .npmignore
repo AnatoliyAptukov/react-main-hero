@@ -2,6 +2,8 @@
 __*__
 # Source code
 src
+# VS.code files
+.vscode
 # Other pre-workers files
 .babelrc.js
 .eslintignore

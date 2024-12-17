@@ -42,7 +42,7 @@ yarn add react-main-hero
 ```
 ## Usage
 
-For minimal usage, after installation, add the code to the module in which you want to use the component:
+For express usage, after installation, add the code to the module in which you want to use the component:
 
 ```ts
 import { MainHero } from "react-main-hero";
@@ -91,7 +91,7 @@ const options = {
   offsetParallaxRatio: 1 / 20, //Ratio of parallax images offset to mouse offset relative to the center
   effectParallaxShift: 10, //Minimum shift of the mouse relative to the center at which parallax starts to move
   startBackOpacity: 0.1, //Initial background images opacity
-  centerOffsetPercent: 2.55, //Image center offset coefficient (can be negative) in percent. For adjusting the center of front images.
+  centerOffsetPercent: 0, //Image center offset coefficient (can be negative) in percent. For adjusting the center of front images.
 };
 
 export default function App() {
@@ -104,10 +104,12 @@ export default function App() {
 }
 
 ```
+The examples above uses source files with a resolution of 900 by 600 pixels. You can download a sample of these files, including the source file in Photoshop / GIMP format (for export images) in the [archive](https://disk.yandex.com/d/RB_eU7bLosC27g).
+
 
 ## Interactive demo
 
 An interactive demonstration is available on my [personal website](https://anatoliy.aptukov.com).
-You can also play with the component in the [codesandbox](https://codesandbox.io/p/sandbox/test-react-main-hero-q4qvvm).
+🔥 You can also play with the component in the [codesandbox](https://codesandbox.io/p/sandbox/test-react-main-hero-q4qvvm).
 
 Best regards, Anatoliy Aptukov.
