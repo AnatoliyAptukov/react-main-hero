@@ -1,17 +1,17 @@
 export type MainHeroImages = {
   srcBackLeft: string | null;
-  srcBackRight:  string | null;
-  srcParallaxLeft:  string | null;
-  srcParallaxRight:  string | null;
-  srcFrontLeft:  string | null;
-  srcFrontRight:  string | null;
+  srcBackRight: string | null;
+  srcParallaxLeft: string | null;
+  srcParallaxRight: string | null;
+  srcFrontLeft: string | null;
+  srcFrontRight: string | null;
 };
 export type MainHeroOptions = {
   maxHeight: number;
   aspectRatio: number;
   offsetFrontRatio: number;
   offsetParallaxRatio: number;
-  effectParallaxOffset: number;
+  effectParallaxShift: number;
   startBackOpacity: number;
   centerOffsetPercent: number;
 };

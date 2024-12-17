@@ -1,0 +1,11 @@
+# Marked for ignore folders and files
+__*__
+# Source code
+src
+# Other pre-workers files
+.babelrc.js
+.eslintignore
+.eslintrc.yml
+.prettierignore
+prettier.config.js
+rollup.config.js

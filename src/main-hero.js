@@ -5,9 +5,9 @@ import { defaultOptions, defaultStyles } from './config';
 
 function MainHero({ className, images, options }) {
   options = { ...defaultOptions, ...options };
-  const initStyles = getInitStyles(options);
   const sizes = useImageSizes(images);
   const frameRef = useRef(null);
+  const initStyles = getInitStyles(options, frameRef);
   const [styles, dispatchStyles] = useReducer(styleReducer, initStyles);
   const { width: watcherWidth, height: watcherHeight } = useResizeObserver({
     elementRef: frameRef,
@@ -60,7 +60,7 @@ function MainHero({ className, images, options }) {
 
   return (
     <div
-      className={'react-main-hero__frame' + '' + (className ?? '')}
+      className={'react-main-hero__frame' + ' ' + (className ?? '')}
       style={initStyles.frame}
       ref={frameRef}
     >
@@ -200,7 +200,7 @@ function calculateStyles(frameWidth, pointerX, options, sizes, initStyles) {
             offsetParallaxX +
             'px',
           filter:
-            offsetFrontX + options.effectParallaxOffset < 0
+            offsetFrontX + options.effectParallaxShift < 0
               ? ''
               : initStyles.parallaxLeft.filter,
         }
@@ -213,7 +213,7 @@ function calculateStyles(frameWidth, pointerX, options, sizes, initStyles) {
             offsetParallaxX +
             'px',
           filter:
-            offsetFrontX - options.effectParallaxOffset > 0
+            offsetFrontX - options.effectParallaxShift > 0
               ? ''
               : initStyles.parallaxRight.filter,
         }
@@ -222,7 +222,7 @@ function calculateStyles(frameWidth, pointerX, options, sizes, initStyles) {
       ? {
           left: frameWidth / 2 - displaySizes.backLeft.width / 2 + 'px',
           opacity:
-            offsetFrontX + options.effectParallaxOffset < 0
+            offsetFrontX + options.effectParallaxShift < 0
               ? 1
               : initStyles.backLeft.opacity,
         }
@@ -231,7 +231,7 @@ function calculateStyles(frameWidth, pointerX, options, sizes, initStyles) {
       ? {
           right: frameWidth / 2 - displaySizes.backRight.width / 2 + 'px',
           opacity:
-            offsetFrontX - options.effectParallaxOffset > 0
+            offsetFrontX - options.effectParallaxShift > 0
               ? 1
               : initStyles.backRight.opacity,
         }
@@ -240,10 +240,11 @@ function calculateStyles(frameWidth, pointerX, options, sizes, initStyles) {
   return styles;
 }
 
-function getInitStyles(options) {
+function getInitStyles(options, frameRef) {
+  const clientWidth = frameRef?.current?.clientWidth ? frameRef?.current?.clientWidth + 'px' : null;
   const frame = {
     ...defaultStyles.frame,
-    height: `min(${options.maxHeight}px,calc(100vw / ${options.aspectRatio}))`,
+    height: `min(${options.maxHeight}px,calc(${clientWidth ?? '100vw'} / ${options.aspectRatio}))`,
   };
   const backRight = {
     ...defaultStyles.backRight,

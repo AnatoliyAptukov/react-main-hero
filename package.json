@@ -1,6 +1,6 @@
 {
   "name": "react-main-hero",
-  "version": "0.15.0",
+  "version": "0.17.0",
   "description": "A react component for hero block",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",

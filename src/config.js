@@ -3,7 +3,7 @@ export const defaultOptions = {
   aspectRatio: 900 / 600,
   offsetFrontRatio: 1 / 5,
   offsetParallaxRatio: 1 / 20,
-  effectParallaxOffset: 10,
+  effectParallaxShift: 10,
   startBackOpacity: 0.1,
   centerOffsetPercent: 0,
 };

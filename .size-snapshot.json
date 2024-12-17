@@ -1,32 +1,12 @@
 {
-  "./lib/dist/react-transition-group.js": {
-    "bundled": 82684,
-    "minified": 22426,
-    "gzipped": 6876
-  },
-  "./lib/dist/react-transition-group.min.js": {
-    "bundled": 47269,
-    "minified": 14623,
-    "gzipped": 4616
-  },
-  "lib/dist/react-transition-group.js": {
-    "bundled": 8470,
-    "minified": 4064,
-    "gzipped": 1588
-  },
-  "lib/dist/react-transition-group.min.js": {
-    "bundled": 8470,
-    "minified": 4064,
-    "gzipped": 1588
-  },
   "lib/dist/react-main-hero.js": {
-    "bundled": 41178,
-    "minified": 17844,
-    "gzipped": 5752
+    "bundled": 41571,
+    "minified": 17988,
+    "gzipped": 5796
   },
   "lib/dist/react-main-hero.min.js": {
-    "bundled": 41178,
-    "minified": 17844,
-    "gzipped": 5752
+    "bundled": 41571,
+    "minified": 17988,
+    "gzipped": 5796
   }
 }
